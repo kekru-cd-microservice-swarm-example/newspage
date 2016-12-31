@@ -1,0 +1,61 @@
+<div ng-init="init()"></div>
+
+<!-- Carousel
+================================================== -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li ng-repeat="n in newsCarousel" data-target="#myCarousel" data-slide-to="{{$index}}" class="{{$index == 0 ? 'active' : ''}}"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+
+        <div class="item {{$index == 0 ? 'active' : ''}}" ng-repeat="n in newsCarousel">
+            <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>{{n.titel}}</h1>
+                    <p>{{n.text}}</p>
+                    <p><a class="btn btn-default" href="artikel/{{n.id}}" role="button">Mehr lesen &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<!-- /.carousel -->
+
+
+<!-- Marketing messaging and featurettes
+================================================== -->
+<!-- Wrap the rest of the page in another container to center all the content. -->
+
+<div class="container marketing">
+
+
+    <!-- START THE FEATURETTES -->
+    <div ng-repeat="n in news">
+        <div class="row featurette">
+            <div class="col-md-7">
+                <h2 class="featurette-heading">{{n.titel}}</h2>
+                <p class="lead">{{n.text}}</p>
+                <p><a class="btn btn-default" href="artikel/{{n.id}}" role="button">Mehr lesen &raquo;</a></p>
+            </div>
+            <div class="col-md-5">
+                <img class="featurette-image img-responsive center-block" src="{{n.bildURL}}">
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+    </div>
+</div>
+
+
+<!-- /END THE FEATURETTES -->
