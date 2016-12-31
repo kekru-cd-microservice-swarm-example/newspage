@@ -1,9 +1,10 @@
 FROM mongo:3.4.1
 LABEL author="Kevin Krummenauer"
 
-#RUN apt-get update && apt-get install -y dnsutils
+RUN apt-get update && apt-get install -y \
+ jq curl 
+#ADD https://github.com/crypt1d/redi.sh/blob/master/redi.sh /data/redi.sh
 
-ADD https://github.com/crypt1d/redi.sh/blob/master/redi.sh /data/redi.sh
 ADD . /data
 
 ENV MONGO_DNS_NAME="newspage-mongo"
