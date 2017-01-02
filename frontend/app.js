@@ -1,8 +1,23 @@
 angular.module('NewsApp', []);
 
-angular.module('NewsApp')    
+angular.module('NewsApp', ['ngRoute'])    
+.config(['$routeProvider', '$locationProvider',
+  function($routeProvider, $locationProvider) {
+    $routeProvider
+      .when('/', {
+        templateUrl: 'startseite.html',
+        controller: 'NewsCtrl',
+        controllerAs: 'news'
+      })
+      .when('/artikel/:id', {
+        templateUrl: 'artikel.html',
+        controller: 'ArtikelCtrl',
+        controllerAs: 'artikel'
+      });
 
-.controller('newsCtrl', function ($scope, $http) {
+    $locationProvider.html5Mode(true);
+}])
+.controller('NewsCtrl', function ($scope, $http) {
 
     $scope.baseURL = 'http://localhost:8081/api/';
     $scope.news = [[]];
@@ -42,4 +57,7 @@ angular.module('NewsApp')
             console.log(response);
         });
     }
+}).controller('ArtikelCtrl', function ($scope, $http) {
+    
+    
 });
