@@ -1,25 +1,32 @@
+var baseURL = 'http://localhost:8081/api/';
+
 angular.module('NewsApp', []);
 
 angular.module('NewsApp', ['ngRoute'])    
+
+
 .config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'startseite.html',
-        controller: 'NewsCtrl',
-        controllerAs: 'news'
+        controller: 'NewsCtrl'        
       })
-      .when('/artikel/:id', {
+      .when('/artikel/:artikelid', {
         templateUrl: 'artikel.html',
-        controller: 'ArtikelCtrl',
-        controllerAs: 'artikel'
+        controller: 'ArtikelCtrl'
+      }).otherwise({
+        redirectTo: '/'
       });
 
     $locationProvider.html5Mode(true);
 }])
+
+
+
 .controller('NewsCtrl', function ($scope, $http) {
 
-    $scope.baseURL = 'http://localhost:8081/api/';
+    
     $scope.news = [[]];
 
     $scope.init = function(){
@@ -31,7 +38,7 @@ angular.module('NewsApp', ['ngRoute'])
         
         $http({
             method: 'GET',
-            url: $scope.baseURL + 'newslist'
+            url: baseURL + 'newslist'
 
         }).then(function successCallback(response) {
 
@@ -46,7 +53,7 @@ angular.module('NewsApp', ['ngRoute'])
     $scope.getCarouselNews = function(){
         $http({
             method: 'GET',
-            url: $scope.baseURL + 'newscarousel'
+            url: baseURL + 'newscarousel'
 
         }).then(function successCallback(response) {
 
@@ -57,7 +64,25 @@ angular.module('NewsApp', ['ngRoute'])
             console.log(response);
         });
     }
-}).controller('ArtikelCtrl', function ($scope, $http) {
+
+
+}).controller('ArtikelCtrl', function ($scope, $http, $routeParams) {
     
-    
+    $scope.artikelid = $routeParams.artikelid;
+    console.log($scope.artikelid);
+
+    $scope.getArtikel = function(){
+        $http({
+            method: 'GET',
+            url: baseURL + 'newsfull/' + $scope.artikelid
+
+        }).then(function successCallback(response) {
+
+            $scope.artikel = response.data;
+            console.log(response);
+
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+    }
 });
