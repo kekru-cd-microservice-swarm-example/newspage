@@ -1,3 +1,6 @@
+@Library('github.com/kekru-cd-microservice-swarm-example/cd-main@master')
+import steps.AlphaNachrichten
+
 node {
   
    stage('Preparation') { // for display purposes
@@ -5,6 +8,8 @@ node {
       git 'https://github.com/kekru-cd-microservice-swarm-example/newsservice'
       sh 'chmod +x setup-dockerclient'
       sh './setup-dockerclient'
+      def an = new AlphaNachrichten(steps)
+      an.docker 'ps'
 
    }
    stage('Build') {
