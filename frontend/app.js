@@ -1,4 +1,5 @@
-var baseURL = 'http://localhost:8081/api/';
+//var baseURL = 'http://localhost:8081/api/';
+var baseURL = '/api/';
 
 angular.module('NewsApp', []);
 
