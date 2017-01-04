@@ -1,25 +1,19 @@
 node {
-   stage 'Stage 1'
-     echo 'Hello World 1'
+  
+   stage('Preparation') { // for display purposes
+      // Get some code from a GitHub repository
+      git 'https://github.com/kekru-cd-microservice-swarm-example/newsservice'
+      sh 'chmod +x setup-dockerclient'
+      sh './setup-dockerclient'
 
-   stage 'Build'
-     sh 'rm -R continuousdelivery-microservices-dockerswarm-example'
-     sh 'git clone https://github.com/kekru/continuousdelivery-microservices-dockerswarm-example.git'
-     dir('continuousdelivery-microservices-dockerswarm-example/microservices/newspage'){
-        sh 'ls -la'
-        sh 'chmod 555 mvnw'
-        sh './mvnw clean install'
-     }
-     
-   stage 'promotion'
-     def userInput = input(
-       id: 'userInput', message: 'Let\'s promote?', parameters: [
-       [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env'],
-       [$class: 'TextParameterDefinition', defaultValue: 'uat1', description: 'Target', name: 'target']
-      ]) 
-      echo ("Env: "+userInput['env'])
-      echo ("Target: "+userInput['target'])
-   
-   stage 'Stage 2'
-     echo 'Hello World 2'
+   }
+   stage('Build') {
+      // Run the maven build
+      sh 'chmod 777 mvnw'
+      sh './mvnw clean package'
+      sh './docker build -t alphanachrichten/newspage .'
+   }
+   stage('Starte Testumgebung') {
+      sh './docker run -d --name test123 -p 9992:8081 alphanachrichten/newspage'
+   }
 }
