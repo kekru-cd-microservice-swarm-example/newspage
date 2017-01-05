@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sleep 5
+sleep 15
 
 EIGENE_IP_ADRESSE=$(hostname --ip-address)
 

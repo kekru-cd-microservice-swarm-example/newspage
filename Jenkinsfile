@@ -19,6 +19,7 @@ node {
       sh './docker build -t alphanachrichten/newspage .'
    }
    stage('Starte Testumgebung') {
-      sh './docker run -d --name test123 -p 9992:8081 alphanachrichten/newspage'
+      sh './docker stack deploy --compose-file base-setup.stack.yml test1'
+      sh './docker stack rm test1'
    }
 }
