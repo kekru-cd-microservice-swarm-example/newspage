@@ -10,7 +10,7 @@ node {
       sh './setup-dockerclient'
       def an = new AlphaNachrichten(steps)
       an.docker 'ps'
-
+	  an.printTree
    }
    stage('Build') {
       // Run the maven build
@@ -19,7 +19,7 @@ node {
       sh './docker build -t alphanachrichten/newspage .'
    }
    stage('Starte Testumgebung') {
-      sh './docker stack deploy --compose-file base-setup.stack.yml test1'
-      sh './docker stack rm test1'
+      //sh './docker stack deploy --compose-file base-setup.stack.yml test1'
+      //sh './docker stack rm test1'
    }
 }
