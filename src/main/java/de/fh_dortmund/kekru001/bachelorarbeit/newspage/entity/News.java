@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,14 +15,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class News {
-    private String id;
+    private long id = 0;
     private String titel;
     private String text;
     private String autor;
     private String bildURL = "http://www.greensoul.de/wp-content/uploads/2015/09/Plastikente.jpg";
+    private Date datum;
+    private boolean carousel = false;
     private List<Kommentar> kommentare = new LinkedList<Kommentar>();
 
-    public News(String id, String titel, String text, String autor){
+    public News(long id, String titel, String text, String autor){
         this.id = id;
         this.titel = titel;
         this.text = text;
