@@ -46,7 +46,7 @@
             <div class="col-md-7">
                 <h2 class="featurette-heading">{{n.titel}}</h2>
                 <p class="lead">{{n.text}}</p>
-                <p><a class="btn btn-default" href="artikel/{{n.id}}" role="button">Mehr lesen &raquo;</a></p>
+                <p><a id="news-button-{{$index}}" class="btn btn-default" href="artikel/{{n.id}}" role="button">Mehr lesen &raquo;</a></p>
             </div>
             <div class="col-md-5">
                 <img class="featurette-image img-responsive center-block" src="{{n.bildURL}}">
