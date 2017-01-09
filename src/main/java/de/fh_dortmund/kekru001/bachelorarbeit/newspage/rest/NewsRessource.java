@@ -27,7 +27,7 @@ public class NewsRessource {
 
     @RequestMapping("/newscarousel")
     public List<News> carouselNews(){
-        return newsService.findLastXNews(3, true);
+        return newsService.findLastXNewsCarousel(3);
         //return Arrays.asList(new News("news3", "Abc!", "Ein Text", "Herr von Ribbeck"), new News("news4", "Feine Sache", "Kleines Stück Plastik gefunden", "Herr von Ribbeck auf Ribbeck"));
     }
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import org.springframework.data.annotation.Id;
 
 /**
  * Created by krummenauer on 02.01.2017.
@@ -15,6 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class News {
+
+    @Id
+    private String idMongo;
     private long id = 0;
     private String titel;
     private String text;
