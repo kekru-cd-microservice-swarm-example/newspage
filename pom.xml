@@ -98,6 +98,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
                 <executions>
                     <execution>
                         <!-- Standard id "default-test" überschreiben -->
@@ -107,8 +108,27 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>seleniumtests/*Test.java</exclude>
+                                <exclude>%regex[.*seleniumtests.*]</exclude>
                             </excludes>
+                            <includes>
+                                <include>%regex[.*unittests.*]</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run-selenium</id>
+                        <!-- nicht standardmaessig starten -->
+                        <phase>none</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>%regex[.*unittests.*]</exclude>
+                            </excludes>
+                            <includes>
+                                <include>%regex[.*seleniumtests.*]</include>
+                            </includes>
                         </configuration>
                     </execution>
                 </executions>
@@ -116,34 +136,7 @@
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <!-- Dieses Profil startet die Seleniumtests und nicht die Unittests -->
-            <id>run-selenium-tests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <!-- Standard id "default-test" überschreiben -->
-                                <id>default-test</id>
-                                <goals>
-                                    <goal>test</goal>
-                                </goals>
-                                <configuration>
-                                    <excludes>
-                                        <exclude>unittests/*Test.java</exclude>
-                                    </excludes>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+
 
 
 </project>
