@@ -23,9 +23,10 @@ import static org.junit.Assert.assertNotNull;
 public class NewsAnsichtTest {
 
         static final String NEWS_COLLECTION = "news";
+        static String newspageURL;
         static WebDriver driver;
-        MongoClient mongoClient;
-        MongoDatabase db;
+        static MongoClient mongoClient;
+        static MongoDatabase db;
 
         @BeforeClass
         public static void initClass() throws MalformedURLException {
@@ -39,13 +40,13 @@ public class NewsAnsichtTest {
 
             driver.manage().window().maximize();
 
-            final String url = "http://newspage:8081/";
-            //Webseite ueber Selenium im Firefox aufrufen
-            driver.get(url);
-        }
+            final String newspageHost = Utils.getPropertOrSystemEnvOrDefault("newspage.host", "newspage");
+            final String newspagePort = Utils.getPropertOrSystemEnvOrDefault("newspage.port", "8081");
+            newspageURL = "http://"+newspageHost+":"+newspagePort+"/";
 
-        @Before
-        public void resetMongoDB(){
+
+
+
             String host =  Utils.getPropertOrSystemEnvOrDefault("mongo.host", "10.1.6.210");
             int port = Integer.parseInt(Utils.getPropertOrSystemEnvOrDefault("mongo.port", "27017"));
             mongoClient = new MongoClient(host, port);
@@ -53,14 +54,24 @@ public class NewsAnsichtTest {
 
             db = mongoClient.getDatabase("test");
             assertNotNull(db);
+        }
 
+        @Before
+        public void resetMongoDB() throws InterruptedException {
             //leeren der Datenbank
             db.getCollection(NEWS_COLLECTION).drop();
 
             save(new News("news1", "Neuveröffentlichung!", "Ein Text", "Herr von Ribbeck"));
-            save(new News("news2","Feine Sache", "Kleines Stück Plastik gefunden", "Herr von Ribbeck auf Ribbeck"));
+            save(new News("news2", "Feine Sache", "Kleines Stück Plastik gefunden", "Herr von Ribbeck auf Ribbeck"));
 
+            News n = new News("news2","Schnee!", "Der Winter kommt und es wird Zeit die Skier heraus zu kramen", "Max Schneemann");
+            n.setCarousel(true);
+            save(n);
 
+            Thread.sleep(3000);
+
+            //Webseite ueber Selenium im Firefox aufrufen
+            driver.get(newspageURL);
         }
 
         private void save(News n){
@@ -85,6 +96,7 @@ public class NewsAnsichtTest {
         @AfterClass
         public static void tearDown(){
             driver.quit();
+            mongoClient.close();
         }
 
 
