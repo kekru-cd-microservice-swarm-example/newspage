@@ -1,4 +1,4 @@
-package de.fh_dortmund.kekru001.bachelorarbeit.newspage.service;
+package de.fh_dortmund.kekru001.bachelorarbeit.newspage.util;
 
 import java.io.IOException;
 import java.io.InputStream;

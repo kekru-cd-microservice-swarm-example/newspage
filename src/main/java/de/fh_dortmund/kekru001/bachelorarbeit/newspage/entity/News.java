@@ -1,13 +1,11 @@
 package de.fh_dortmund.kekru001.bachelorarbeit.newspage.entity;
 
-import de.fh_dortmund.kekru001.bachelorarbeit.newspage.service.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+
 import org.springframework.data.annotation.Id;
 
 /**
