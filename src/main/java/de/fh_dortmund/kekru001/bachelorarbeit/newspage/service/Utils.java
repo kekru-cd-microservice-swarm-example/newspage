@@ -10,13 +10,22 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Utils {
 
-    public static String getPropertyOrSystemEnv(String key){
+    public static String getPropertOrSystemEnvOrDefault(String key){
+        return getPropertOrSystemEnvOrDefault(key, "");
+    }
+
+    public static String getPropertOrSystemEnvOrDefault(String key, String defaultValue){
         String s = System.getProperty(key);
         if(s != null){
             return s;
         }
 
-        return System.getenv(key);
+        s = System.getenv(key);
+        if(s != null){
+            return s;
+        }
+
+        return defaultValue;
     }
 
 
