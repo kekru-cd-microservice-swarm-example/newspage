@@ -2,6 +2,8 @@ package de.fh_dortmund.kekru001.bachelorarbeit.newspage.service;
 
 import de.fh_dortmund.kekru001.bachelorarbeit.newspage.dao.NewsRepository;
 import de.fh_dortmund.kekru001.bachelorarbeit.newspage.entity.News;
+import de.fh_dortmund.kekru001.bachelorarbeit.newspage.util.Utils;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,21 +17,25 @@ import java.util.List;
 @Component
 public class NewsService {
 
-
     @Autowired
-    private NewsRepository newsRepository;
+    NewsRepository newsRepository;
 
     public List<News> findLastXNews(int count) {
-        return newsRepository.lastNews(new PageRequest(0, count, new Sort(Sort.Direction.DESC, "datum"))).getContent();
+        return shortenText(newsRepository.lastNewsNoForeground(new PageRequest(0, count, new Sort(Sort.Direction.DESC, "datum"))).getContent());
     }
 
-    public List<News> findLastXNewsCarousel(int count) {
-        return newsRepository.lastNewsCarouselOnly(new PageRequest(0, count, new Sort(Sort.Direction.DESC, "datum"))).getContent();
+    public List<News> findLastXNewsForeground(int count) {
+        return shortenText(newsRepository.lastNewsForegroundOnly(new PageRequest(0, count, new Sort(Sort.Direction.DESC, "datum"))).getContent());
     }
 
 
-    public News findByIdNews(long id) {
+    public News findByIdNews(String id) {
         return newsRepository.findById(id);
+    }
+
+    private List<News> shortenText(List<News> news){
+        news.stream().forEach(n -> n.setText(Utils.shorten(n.getText(), 100) + "..."));
+        return news;
     }
 
 

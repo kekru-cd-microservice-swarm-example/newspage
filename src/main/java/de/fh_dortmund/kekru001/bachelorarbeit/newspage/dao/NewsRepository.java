@@ -11,11 +11,11 @@ import org.springframework.data.mongodb.repository.Query;
  */
 public interface NewsRepository extends MongoRepository<News, String> {
 
-    News findById(long id);
+    News findById(String id);
 
-    @Query("{ 'carousel' : true }")
-    Page<News> lastNewsCarouselOnly(Pageable pageable);
+    @Query("{ 'foreground' : true }")
+    Page<News> lastNewsForegroundOnly(Pageable pageable);
 
-    @Query("{}")
-    Page<News> lastNews(Pageable pageable);
+    @Query("{ 'foreground' : false }")
+    Page<News> lastNewsNoForeground(Pageable pageable);
 }

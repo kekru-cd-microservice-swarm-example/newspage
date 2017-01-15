@@ -22,15 +22,16 @@ public class News {
     private String titel;
     private String text;
     private String autor;
-    private String bildURL = "http://www.greensoul.de/wp-content/uploads/2015/09/Plastikente.jpg";
+    private String bildURL;
     private Date datum = new Date();
-    private boolean carousel = false;
+    private boolean foreground = false;
     //private List<Kommentar> kommentare = new LinkedList<Kommentar>();
 
-    public News(String id, String titel, String text, String autor){
+    public News(String id, String titel, String text, String autor, String bildURL){
         this.id = id;
         this.titel = titel;
         this.text = text;
         this.autor = autor;
+        this.bildURL = bildURL;
     }
 }

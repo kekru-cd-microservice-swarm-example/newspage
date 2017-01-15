@@ -32,7 +32,7 @@ angular.module('NewsApp', ['ngRoute'])
 
     $scope.init = function(){
         $scope.getNews();
-        $scope.getCarouselNews();
+        $scope.getForegroundNews();
     }
 
     $scope.getNews = function(){
@@ -51,14 +51,14 @@ angular.module('NewsApp', ['ngRoute'])
         });
     }
 
-    $scope.getCarouselNews = function(){
+    $scope.getForegroundNews = function(){
         $http({
             method: 'GET',
-            url: baseURL + 'newscarousel'
+            url: baseURL + 'newsforeground'
 
         }).then(function successCallback(response) {
 
-            $scope.newsCarousel = response.data;
+            $scope.newsForeground = response.data;
             console.log(response);
 
         }, function errorCallback(response) {

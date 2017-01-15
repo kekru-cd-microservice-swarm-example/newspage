@@ -5,11 +5,11 @@
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
-        <li ng-repeat="n in newsCarousel" data-target="#myCarousel" data-slide-to="{{$index}}" class="{{$index == 0 ? 'active' : ''}}"></li>
+        <li ng-repeat="n in newsForeground" data-target="#myCarousel" data-slide-to="{{$index}}" class="{{$index == 0 ? 'active' : ''}}"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
 
-        <div class="item {{$index == 0 ? 'active' : ''}}" ng-repeat="n in newsCarousel">
+        <div class="item {{$index == 0 ? 'active' : ''}}" ng-repeat="n in newsForeground">
             <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==">
             <div class="container">
                 <div class="carousel-caption">

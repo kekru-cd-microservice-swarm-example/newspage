@@ -21,17 +21,15 @@ public class NewsRessource {
     @RequestMapping("/newslist")
     public List<News> startseiteNews(){
         return newsService.findLastXNews(10);
-        // return Arrays.asList(new News("news1","Neuveröffentlichung!", "Ein Text", "Herr von Ribbeck"), new News("news2","Feine Sache", "Kleines Stück Plastik gefunden", "Herr von Ribbeck auf Ribbeck"));
     }
 
-    @RequestMapping("/newscarousel")
-    public List<News> carouselNews(){
-        return newsService.findLastXNewsCarousel(3);
-        //return Arrays.asList(new News("news3", "Abc!", "Ein Text", "Herr von Ribbeck"), new News("news4", "Feine Sache", "Kleines Stück Plastik gefunden", "Herr von Ribbeck auf Ribbeck"));
+    @RequestMapping("/newsforeground")
+    public List<News> foregroundNews(){
+        return newsService.findLastXNewsForeground(3);
     }
 
     @RequestMapping("/newsfull/{newsid}")
-    public News newsFull(@PathVariable("newsid") long newsid){
+    public News newsFull(@PathVariable("newsid") String newsid){
         return newsService.findByIdNews(newsid);
     }
 }

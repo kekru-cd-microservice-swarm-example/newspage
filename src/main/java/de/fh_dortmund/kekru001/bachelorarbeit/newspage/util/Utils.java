@@ -28,5 +28,9 @@ public class Utils {
         return defaultValue;
     }
 
+    public static String shorten(String s, int maxLength){
+        return s == null ? "" : s.substring(0, maxLength);
+    }
+
 
 }
