@@ -91,7 +91,9 @@ public class NewsAnsichtTest {
 
         @Test
         public void testDetailseiteWirdGeoeffnet() throws InterruptedException {
+            Thread.sleep(3000);
             driver.findElement(By.id("news-button-0")).click();
+            Thread.sleep(3000);
             Assert.assertEquals("Heute wird es später", driver.findElement(By.id("artikel-titel")).getText());
         }
 
