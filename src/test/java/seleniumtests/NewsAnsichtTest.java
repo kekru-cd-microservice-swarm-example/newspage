@@ -35,7 +35,7 @@ public class NewsAnsichtTest {
 
             driver = new RemoteWebDriver(
                     new URL(hub),
-                    DesiredCapabilities.chrome());
+                    DesiredCapabilities.firefox());
 
             driver.manage().window().maximize();
             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
