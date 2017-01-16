@@ -1,30 +1,30 @@
 <div class="container seitenstart" ng-init="getArtikel()">
 
 
-        <div class="row">
+    <div class="row">
 
-            <div class="col-md-7">
-                <a href="/">Zurück</a>
-                <h1 id="artikel-titel">{{artikel.titel}}</h1>
-                <p>Von {{artikel.autor}}</p>
-                <p>{{artikel.text}}</p>
-            </div>
-            <div class="col-md-5">
-                <img src="{{artikel.bildURL}}"/>
-            </div>
+        <div class="col-md-7">
+            <a href="/">Zurück</a>
+
+            <h1 id="artikel-titel">{{artikel.titel}}</h1>
+
+            <p>Von {{artikel.autor}}</p>
+
+            <p>{{artikel.text}}</p>
         </div>
-
-        <div class="row" ng-repeat="k in artikel.kommentare">
-
-            <div class="col-md-7">                
-                <h3>Kommentar von {{k.autor}}</h3>
-                <p>{{k.text}}</p>                               
-            </div>
-            <div class="col-md-5">
-                
-            </div>
+        <div class="col-md-5">
+            <img src="{{artikel.bildURL}}"/>
         </div>
+    </div>
 
-      
+    abc
+
+    <div class="row">
+        <div class="col-md-7">
+            <div ng-include src="/commentsservice/comments.html"></div>
+            <script src="/commentsservice/app.js"></script>
+        </div>
+    </div>
+
 
 </div>
