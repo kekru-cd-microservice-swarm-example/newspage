@@ -1,4 +1,4 @@
-@Library('github.com/kekru-cd-microservice-swarm-example/cd-main@master')
+@Library('github.com/kekru-cd-microservice-swarm-example/jenkins-shared@master')
 import steps.CDMain
 
 def an
