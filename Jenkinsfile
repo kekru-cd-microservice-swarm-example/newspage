@@ -35,7 +35,7 @@ node {
         //  'nummer 1': {
                 def e1 = an.startTestenvironment('-1')
                 sh './docker service update --replicas 1 --image manager1:5000/cd/newspage:'+an.commitId+' ' + e1.fullServiceName('newspage')
-                sh './docker service update --replicas 1 --image manager1:5000/cd/newspage-mongo:'+an.commitId+' ' + e1.fullServiceName('newspage-mongo')
+                //sh './docker service update --replicas 1 --image manager1:5000/cd/newspage-mongo:'+an.commitId+' ' + e1.fullServiceName('newspage-mongo')
                 //sh 'sed "s|,]|]|g" <<< "["$(docker service inspect --format=\'{"name": {{json .Spec.Name}}, "portmappings": {{json .Endpoint.Ports}}},\' $(docker stack services -q cd'+an.commitId+'))"]"'
                 newspageWebport = e1.getPublishedPort('newspage', 8081)
                 echo '8081 -> ' + newspageWebport
