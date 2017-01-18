@@ -55,7 +55,7 @@ node {
                     sh './docker run --rm wait 10.1.6.210 '+seleniumPort4444
                     //sh './docker run --rm -e TIMEOUT=60 -e TARGETS=10.1.6.210:'+newspageWebport+',10.1.6.210:'+mongoPort+',10.1.6.210:'+seleniumPort4444+' waisbrot/wait'
                     
-                    sh './mvnw test-compile surefire:test@run-selenium -Dnewspage.host=newspage -Dnewspage.port=8081 -Dselenium.host=10.1.6.210 -Dselenium.port='+seleniumPort4444+' -Dmongo.host=10.1.6.210 -Dmongo.port='+mongoPort
+                    sh './mvnw test-compile surefire:test@run-selenium -Dwebsite.host=traefik -Dwebsite.port=80 -Dselenium.host=10.1.6.210 -Dselenium.port='+seleniumPort4444+' -Dmongo.host=10.1.6.210 -Dmongo.port='+mongoPort
                 }finally{
                     sh './docker service rm newspage-myselenium'
                 }
