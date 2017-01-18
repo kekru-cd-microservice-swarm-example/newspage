@@ -49,9 +49,9 @@ public class NewsAnsichtTest {
     }
 
     private static void initMongoClient() {
-        final String newspageHost = Utils.getPropertOrSystemEnvOrDefault("newspage.host", "localhost");
-        final String newspagePort = Utils.getPropertOrSystemEnvOrDefault("newspage.port", "8081");
-        newspageURL = "http://" + newspageHost + ":" + newspagePort + "/";
+        final String websiteHost = Utils.getPropertOrSystemEnvOrDefault("website.host", "localhost");
+        final String websitePort = Utils.getPropertOrSystemEnvOrDefault("website.port", "8081");
+        newspageURL = "http://" + websiteHost + ":" + websitePort + "/newspage/";
 
 
         String host = Utils.getPropertOrSystemEnvOrDefault("mongo.host", "10.1.6.210");
