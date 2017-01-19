@@ -3,6 +3,8 @@ import steps.CDMain
 
 def an
 def newspageWebport
+def newspageImageName
+def newspageMongoImageName
 
 node {
    def commit_id    
@@ -25,8 +27,8 @@ node {
       // Run the maven build
       sh 'chmod 777 mvnw'
       sh './mvnw clean package'
-      an.buildAndPush('newspage')
-      an.buildAndPush('newspage-mongo', 'mongodb/mongodocker')
+      newspageImageName = an.buildAndPush('newspage')
+      newspageMongoImageName = an.buildAndPush('newspage-mongo', 'mongodb/mongodocker')
       //sh './docker build -t manager1:5000/cd/newspage:'+an.commitId+' .'
       //sh './docker push manager1:5000/cd/newspage:'+an.commitId
       //sh './docker build -t manager1:5000/cd/newspage-mongo:'+an.commitId+' mongodb/mongodocker'
@@ -36,7 +38,7 @@ node {
       //parallel(
         //  'nummer 1': {
                 def e1 = an.startTestenvironment('-1')
-                sh './docker service update --replicas 1 --image manager1:5000/cd/newspage:'+an.commitId+' ' + e1.fullServiceName('newspage')
+                //sh './docker service update --replicas 1 --image manager1:5000/cd/newspage:'+an.commitId+' ' + e1.fullServiceName('newspage')
                 //sh './docker service update --replicas 1 --image manager1:5000/cd/newspage-mongo:'+an.commitId+' ' + e1.fullServiceName('newspage-mongo')
                 //sh 'sed "s|,]|]|g" <<< "["$(docker service inspect --format=\'{"name": {{json .Spec.Name}}, "portmappings": {{json .Endpoint.Ports}}},\' $(docker stack services -q cd'+an.commitId+'))"]"'
                 newspageWebport = e1.getPublishedPort('newspage', 8081)
@@ -52,9 +54,12 @@ node {
                 echo 'Selenium Interface: ' + seleniumPort4444
                 
                 try{
-                    sh './docker run --rm wait 10.1.6.210 '+newspageWebport
-                    sh './docker run --rm wait 10.1.6.210 '+mongoPort
-                    sh './docker run --rm wait 10.1.6.210 '+seleniumPort4444
+                    an.waitForTCP(newspageWebport)
+                    an.waitForTCP(mongoPort)
+                    an.waitForTCP(seleniumPort4444)
+                    //sh './docker run --rm wait 10.1.6.210 '+newspageWebport
+                    //sh './docker run --rm wait 10.1.6.210 '+mongoPort
+                    //sh './docker run --rm wait 10.1.6.210 '+seleniumPort4444
                     //sh './docker run --rm -e TIMEOUT=60 -e TARGETS=10.1.6.210:'+newspageWebport+',10.1.6.210:'+mongoPort+',10.1.6.210:'+seleniumPort4444+' waisbrot/wait'
                     
                     sh './mvnw test-compile surefire:test@run-selenium -Dwebsite.host=traefik -Dwebsite.port=80 -Dselenium.host=10.1.6.210 -Dselenium.port='+seleniumPort4444+' -Dmongo.host=10.1.6.210 -Dmongo.port='+mongoPort
@@ -80,4 +85,7 @@ node {
       ]) 
       echo ("Env: "+userInput['env'])
       echo ("Target: "+userInput['target'])
+
+      an.deployInProduction('newspage', newspageImageName)
+      an.deployInProduction('newspage-mongo', newspageMongoImageName)
    }
