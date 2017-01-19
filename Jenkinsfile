@@ -25,10 +25,12 @@ node {
       // Run the maven build
       sh 'chmod 777 mvnw'
       sh './mvnw clean package'
-      sh './docker build -t manager1:5000/cd/newspage:'+an.commitId+' .'
-      sh './docker push manager1:5000/cd/newspage:'+an.commitId
-      sh './docker build -t manager1:5000/cd/newspage-mongo:'+an.commitId+' mongodb/mongodocker'
-      sh './docker push manager1:5000/cd/newspage-mongo:'+an.commitId
+      an.buildAndPush('newspage')
+      an.buildAndPush('newspage-mongo')
+      //sh './docker build -t manager1:5000/cd/newspage:'+an.commitId+' .'
+      //sh './docker push manager1:5000/cd/newspage:'+an.commitId
+      //sh './docker build -t manager1:5000/cd/newspage-mongo:'+an.commitId+' mongodb/mongodocker'
+      //sh './docker push manager1:5000/cd/newspage-mongo:'+an.commitId
    }
    stage('Starte Testumgebung') {
       //parallel(
