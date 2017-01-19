@@ -77,15 +77,22 @@ node {
 }
 
 
-   stage ('Live Deployment'){
-     def userInput = input(
-       id: 'userInput', message: 'Erfolgreich getestete Version erreichbar unter http://10.1.6.210:'+newspageWebport+' Live Deployment?', parameters: [
-       [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env'],
-       [$class: 'TextParameterDefinition', defaultValue: 'uat1', description: 'Target', name: 'target']
-      ]) 
-      echo ("Env: "+userInput['env'])
-      echo ("Target: "+userInput['target'])
+stage ('Manuelle Tests'){
+    def userInput = input(
+        id: 'userInput', message: 'Erfolgreich getestete Version erreichbar unter http://10.1.6.210:'+commentsserviceWebport+' Live Deployment?', parameters: [
+            [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env'],
+            [$class: 'TextParameterDefinition', defaultValue: 'uat1', description: 'Target', name: 'target']
+        ]
+    )
 
-      an.deployInProduction('newspage', newspageImageName)
-      an.deployInProduction('newspage-mongo', newspageMongoImageName)
-   }
+    echo ("Env: "+userInput['env'])
+    echo ("Target: "+userInput['target'])
+
+}
+
+node {
+    stage ('Live Deployment'){
+        an.deployInProduction('newspage', newspageImageName)
+        an.deployInProduction('newspage-mongo', newspageMongoImageName)
+    }
+}
