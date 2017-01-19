@@ -26,7 +26,7 @@ node {
       sh 'chmod 777 mvnw'
       sh './mvnw clean package'
       an.buildAndPush('newspage')
-      an.buildAndPush('newspage-mongo')
+      an.buildAndPush('newspage-mongo', 'mongodb/mongodocker')
       //sh './docker build -t manager1:5000/cd/newspage:'+an.commitId+' .'
       //sh './docker push manager1:5000/cd/newspage:'+an.commitId
       //sh './docker build -t manager1:5000/cd/newspage-mongo:'+an.commitId+' mongodb/mongodocker'
