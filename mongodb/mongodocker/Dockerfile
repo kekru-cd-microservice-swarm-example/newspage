@@ -1,11 +1,10 @@
 FROM mongo:3.4.1
 LABEL author="Kevin Krummenauer"
 
-RUN apt-get update && apt-get install -y \
- jq curl 
-#ADD https://github.com/crypt1d/redi.sh/blob/master/redi.sh /data/redi.sh
-
 ADD . /data
+ADD https://raw.githubusercontent.com/crypt1d/redi.sh/master/redi.sh /data/redi.sh.binary
+
+RUN echo "#!/bin/bash\n/data/redi.sh.binary -H redis -P 6379 "'"$@"' > /data/redi.sh
 
 ENV MONGO_DNS_NAME="newspage-mongo"
 
