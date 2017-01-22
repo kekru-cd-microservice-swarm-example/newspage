@@ -32,4 +32,9 @@ public class NewsRessource {
     public News newsFull(@PathVariable("newsid") String newsid){
         return newsService.findByIdNews(newsid);
     }
+
+    @RequestMapping("/createTestdata")
+    public List<News> createTestdata(){
+        return newsService.createTestdata();
+    }
 }

@@ -25,7 +25,6 @@ public class News {
     private String bildURL;
     private Date datum = new Date();
     private boolean foreground = false;
-    //private List<Kommentar> kommentare = new LinkedList<Kommentar>();
 
     public News(String id, String titel, String text, String autor, String bildURL){
         this.id = id;

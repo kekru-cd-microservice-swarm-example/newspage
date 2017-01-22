@@ -65,7 +65,7 @@ angular.module('NewsApp', ['ngRoute'])
         }
 
 
-    }).controller('ArtikelCtrl', function ($scope, $http, $routeParams) {
+    }).controller('ArtikelCtrl', function ($scope, $http, $routeParams, $sce) {
 
         $scope.artikelid = $routeParams.artikelid;
 
@@ -86,5 +86,9 @@ angular.module('NewsApp', ['ngRoute'])
             }, function errorCallback(response) {
                 console.log(response);
             });
+        }
+
+        $scope.getCommentsURL = function(){
+            return $sce.trustAsResourceUrl('/commentsservice/?' + $scope.artikelid);
         }
     });

@@ -19,9 +19,8 @@
     abc
 
     <div class="row">
-        <div class="col-md-7">
-            <div ng-include src="/commentsservice/comments.html"></div>
-            <script src="/commentsservice/app.js"></script>
+        <div class="col-md-12">
+            <iframe class="commentsiframe" src="{{getCommentsURL()}}"></iframe>
         </div>
     </div>
 
