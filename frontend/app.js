@@ -89,6 +89,6 @@ angular.module('NewsApp', ['ngRoute'])
         }
 
         $scope.getCommentsURL = function(){
-            return $sce.trustAsResourceUrl('/commentsservice/?' + $scope.artikelid);
+            return $sce.trustAsResourceUrl('/commentsservice/?newsid=' + $scope.artikelid);
         }
     });
