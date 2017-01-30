@@ -29,6 +29,9 @@ node {
   
    def seleniumName = 'newspage-myselenium' + an.commitId
    def e1
+   def mongoPort
+   def seleniumPort80
+   def seleniumPort4444
 
    try{      
 
@@ -42,12 +45,12 @@ node {
             newspageWebport = e1.getPublishedPort('newspage', 8081)
             echo '8081 -> ' + newspageWebport
             echo '7379 -> ' + e1.getPublishedPort('webdis', 7379)
-            def mongoPort = e1.getPublishedPort('newspage-mongo', 27017)
+            mongoPort = e1.getPublishedPort('newspage-mongo', 27017)
             echo '27017 -> ' + mongoPort 
             def network = e1.getNetworkName()
             sh './docker service create --name '+seleniumName+' -p 0:80 -p 0:4444 --network '+network+' whiledo/selenium-firefox-webvnc:latest'
-            def seleniumPort80 = an.getPublishedPortOfService(seleniumName, 80)
-            def seleniumPort4444 = an.getPublishedPortOfService(seleniumName, 4444)
+            seleniumPort80 = an.getPublishedPortOfService(seleniumName, 80)
+            seleniumPort4444 = an.getPublishedPortOfService(seleniumName, 4444)
             echo 'Selenium Viewer: ' + seleniumPort80
             echo 'Selenium Interface: ' + seleniumPort4444
 
