@@ -5,78 +5,87 @@ def an
 def newspageWebport
 def newspageImageName
 def newspageMongoImageName
+def stack
 
-node {
-   def commit_id    
-  
-   stage('Preparation') { 
-      git 'https://github.com/kekru-cd-microservice-swarm-example/newspage'
-      
-      an = new CDMain(steps)
-      an.init()
+try{
+
+	node {
+	   def commit_id    
 	  
+	   stage('Preparation') { 
+		  git 'https://github.com/kekru-cd-microservice-swarm-example/newspage'
+		  
+		  an = new CDMain(steps)
+		  an.init()
+		  
 
-   }
-   stage('Build') {
-      
-      sh 'chmod 777 mvnw'
-      sh './mvnw clean package'
-      newspageImageName = an.buildAndPush('newspage')
-      newspageMongoImageName = an.buildAndPush('newspage-mongo', 'mongodb/mongodocker')
-      
-   }
- 
-  
-   def seleniumName = 'newspage-myselenium' + an.commitId
-   def e1
-   def mongoPort
-   def seleniumPort80
-   def seleniumPort4444
+	   }
+	   stage('Build') {
+		  
+		  sh 'chmod 777 mvnw'
+		  sh './mvnw clean package'
+		  newspageImageName = an.buildAndPush('newspage')
+		  newspageMongoImageName = an.buildAndPush('newspage-mongo', 'mongodb/mongodocker')
+		  
+	   }
+	 
+	  
+	   def seleniumName = 'newspage-myselenium' + an.commitId
+	   def mongoPort
+	   def seleniumPort80
+	   def seleniumPort4444
 
-   try{      
+	   try{      
 
-        stage('Starte Testumgebung') {            
-        
-            e1 = an.startTestenvironment('news')
-            sh './docker service update --replicas 1 --image ' + newspageImageName + ' ' + e1.fullServiceName('newspage')
-            sh 'echo "" | ./redi.sh -s newspage-mongo-primary'
-            sh './docker service update --replicas 1 --image ' + newspageMongoImageName + ' ' + e1.fullServiceName('newspage-mongo')
+			stage('Starte Testumgebung') {            
+			
+				stack = an.startTestenvironment('news')
+				sh './docker service update --replicas 1 --image ' + newspageImageName + ' ' + stack.fullServiceName('newspage')
+				sh 'echo "" | ./redi.sh -s newspage-mongo-primary'
+				sh './docker service update --replicas 1 --image ' + newspageMongoImageName + ' ' + stack.fullServiceName('newspage-mongo')
 
-            newspageWebport = e1.getPublishedPort('newspage', 8081)
-            echo '8081 -> ' + newspageWebport
-            echo '7379 -> ' + e1.getPublishedPort('webdis', 7379)
-            mongoPort = e1.getPublishedPort('newspage-mongo', 27017)
-            echo '27017 -> ' + mongoPort 
-            def network = e1.getNetworkName()
-            sh './docker service create --name '+seleniumName+' -p 0:80 -p 0:4444 --network '+network+' whiledo/selenium-firefox-webvnc:latest'
-            seleniumPort80 = an.getPublishedPortOfService(seleniumName, 80)
-            seleniumPort4444 = an.getPublishedPortOfService(seleniumName, 4444)
-            echo 'Selenium Viewer: ' + seleniumPort80
-            echo 'Selenium Interface: ' + seleniumPort4444
+				newspageWebport = stack.getPublishedPort('newspage', 8081)
+				echo '8081 -> ' + newspageWebport
+				echo '7379 -> ' + stack.getPublishedPort('webdis', 7379)
+				mongoPort = stack.getPublishedPort('newspage-mongo', 27017)
+				echo '27017 -> ' + mongoPort 
+				def network = stack.getNetworkName()
+				sh './docker service create --name '+seleniumName+' -p 0:80 -p 0:4444 --network '+network+' whiledo/selenium-firefox-webvnc:latest'
+				seleniumPort80 = an.getPublishedPortOfService(seleniumName, 80)
+				seleniumPort4444 = an.getPublishedPortOfService(seleniumName, 4444)
+				echo 'Selenium Viewer: ' + seleniumPort80
+				echo 'Selenium Interface: ' + seleniumPort4444
 
-            
-            an.waitForTCP(newspageWebport)
-            an.waitForTCP(mongoPort)
-            an.waitForTCP(seleniumPort4444)     
-        
-        }
+				
+				an.waitForTCP(newspageWebport)
+				an.waitForTCP(mongoPort)
+				an.waitForTCP(seleniumPort4444)     
+			
+			}
 
-        stage('Integrationstests') {        
-                sh './mvnw test-compile surefire:test@run-selenium -Dwebsite.host=traefik -Dwebsite.port=80 -Dselenium.host=10.1.6.210 -Dselenium.port='+seleniumPort4444+' -Dmongo.host=10.1.6.210 -Dmongo.port='+mongoPort
-        }
+			stage('Integrationstests') {        
+					sh './mvnw test-compile surefire:test@run-selenium -Dwebsite.host=traefik -Dwebsite.port=80 -Dselenium.host=10.1.6.210 -Dselenium.port='+seleniumPort4444+' -Dmongo.host=10.1.6.210 -Dmongo.port='+mongoPort
+			}
 
-   }finally{
-       sh './docker service rm ' + seleniumName
-       e1.removeStack()
-   }
-}
+	   }finally{
+		   sh './docker service rm ' + seleniumName       
+	   }
+	}
 
 
-stage ('Manuelle Tests'){
-    def userInput = input(
-        id: 'userInput', message: 'Erfolgreich getestete Version erreichbar unter http://10.1.6.210:'+newspageWebport+'/newspage/ Live Deployment?'
-    )
+	stage ('Manuelle Tests'){
+		def userInput = input(
+			id: 'userInput', message: 'Erfolgreich getestete Version erreichbar unter http://10.1.6.210:'+newspageWebport+'/newspage/ Live Deployment?'
+		)
 
+	}
+
+}finally{    
+	node {
+		stage ('Clean Testumgebung'){
+			stack.removeStack()
+		}
+	}
 }
 
 node {
