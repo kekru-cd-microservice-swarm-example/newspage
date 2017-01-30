@@ -5,6 +5,7 @@ def an
 def newspageWebport
 def newspageImageName
 def newspageMongoImageName
+def traefikPort
 def stack
 
 try{
@@ -46,7 +47,8 @@ try{
 
 				newspageWebport = stack.getPublishedPort('newspage', 8081)
 				echo '8081 -> ' + newspageWebport
-				echo '7379 -> ' + stack.getPublishedPort('webdis', 7379)
+				traefikPort = stack.getPublishedPort('traefik', 80)
+				echo 'Traefik -> ' + traefikPort
 				mongoPort = stack.getPublishedPort('newspage-mongo', 27017)
 				echo '27017 -> ' + mongoPort 
 				def network = stack.getNetworkName()
@@ -75,14 +77,14 @@ try{
 
 	stage ('Manuelle Tests'){
 		def userInput = input(
-			id: 'userInput', message: 'Erfolgreich getestete Version erreichbar unter http://10.1.6.210:'+newspageWebport+'/newspage/ Live Deployment?'
+			id: 'userInput', message: 'Erfolgreich getestete Version erreichbar unter http://10.1.6.210:'+traefikPort+'/newspage/ Live Deployment?'
 		)
 
 	}
 
 }finally{    
 	node {
-		stage ('Clean Testumgebung'){
+		stage ('Entferne Testumgebung'){
 			stack.removeStack()
 		}
 	}
