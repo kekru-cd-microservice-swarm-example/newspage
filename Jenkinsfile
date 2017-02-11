@@ -52,7 +52,7 @@ try{
 				mongoPort = stack.getPublishedPort('newspage-mongo', 27017)
 				echo '27017 -> ' + mongoPort 
 				def network = stack.getNetworkName()
-				sh './docker service create --name '+seleniumName+' -p 0:80 -p 0:4444 --network '+network+' whiledo/selenium-firefox-webvnc:latest'
+				sh './docker service create --name '+seleniumName+' -p 0:80 -p 0:4444 --network '+network+' manager1:5000/whiledo/selenium-firefox-webvnc:latest'
 				seleniumPort80 = an.getPublishedPortOfService(seleniumName, 80)
 				seleniumPort4444 = an.getPublishedPortOfService(seleniumName, 4444)
 				echo 'Selenium Viewer: ' + seleniumPort80
