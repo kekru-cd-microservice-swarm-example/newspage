@@ -42,8 +42,8 @@ try{
 			
 				stack = an.startTestenvironment('news')
 				sh './docker service update --replicas 1 --image ' + newspageImageName + ' ' + stack.fullServiceName('newspage')
-				sh 'echo "" | ./redi.sh -s newspage-mongo-primary'
-				sh './docker service update --replicas 1 --image ' + newspageMongoImageName + ' ' + stack.fullServiceName('newspage-mongo')
+				#sh 'echo "" | ./redi.sh -s newspage-mongo-primary'
+				#sh './docker service update --replicas 1 --image ' + newspageMongoImageName + ' ' + stack.fullServiceName('newspage-mongo')
 
 				newspageWebport = stack.getPublishedPort('newspage', 8081)
 				echo '8081 -> ' + newspageWebport
@@ -93,6 +93,6 @@ try{
 node {
     stage ('Live Deployment'){
         an.deployInProduction('newspage', newspageImageName)
-        an.deployInProduction('newspage-mongo', newspageMongoImageName)
+        #an.deployInProduction('newspage-mongo', newspageMongoImageName)
     }
 }
